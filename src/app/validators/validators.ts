@@ -9,11 +9,13 @@ export function onlyDigits(control: AbstractControl): ValidationErrors | null {
 
 export function dateLessThan(from: string, to: string): any {
   return (group: FormGroup): ValidationErrors | null => {
-    const f = group?.get(from)?.value;
-    const t = group?.get(to)?.value;
+    const f = (group?.get(from)?.value).split('.').reverse();
+    const t = (group?.get(to)?.value).split('.').reverse();
+
     if (!f || !t) {
       return null;
     }
+
     return +new Date(f) > +new Date(t) ? {invalidDates: true} : null;
   }
 }
