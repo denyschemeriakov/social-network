@@ -1,7 +1,39 @@
-<ul class="list-group">
-  <li class="list-group-item">An item</li>
-  <li class="list-group-item">A second item</li>
-  <li class="list-group-item">A third item</li>
-  <li class="list-group-item">A fourth item</li>
-  <li class="list-group-item">And a fifth one</li>
-</ul>
+<div *ngIf="!isLoading" class="w-100 mt-5">
+
+
+
+  <ul class="mx-auto px-3 list-group max-width-500">
+
+    <ng2-completer
+      #completer
+      (selected)="onSelectUser($event)"
+      (click)="completer.open()"
+      [datasource]="usernames"
+      [initialValue]="''"
+      [autoMatch]="true"
+      [openOnFocus]="true"
+      [fillHighlighted]="false"
+      [autoHighlight]="true"
+      [minSearchLength]="0"
+      [placeholder]="'Search user'"
+      [textNoResults]="''"
+      [textSearching]="''"
+      class="mb-2">
+    </ng2-completer>
+
+    <li *ngFor="let user of users"
+        class="list-group-item d-flex align-items-center justify-content-between">
+
+      <div>
+          {{user?.username | shortName}}
+          <span *isOnline="user?.username === authorizeUsername" class="badge rounded-pill bg-success">online</span>
+          <span *isOnline="user?.username !== authorizeUsername" class="badge rounded-pill bg-warning text-dark">offline</span>
+      </div>
+
+      <button routerLink="/list-users/detail/{{user?.id}}"
+              type="button" class="btn btn-link">View Details</button>
+
+    </li>
+  </ul>
+
+</div>

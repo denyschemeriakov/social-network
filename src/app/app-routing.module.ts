@@ -1,6 +1,8 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
 import {LoginComponent} from "./components/login/login.component";
+import {IsAuthorizedGuard} from "./guards/is-authorized.guard";
+import {IsAdminGuard} from "./guards/is-admin.guard";
 
 const appRoutes: Routes = [
   {
@@ -13,8 +15,14 @@ const appRoutes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'users-list',
+    canActivate: [IsAuthorizedGuard],
+    path: 'list-users',
     loadChildren: () => import('./modules/overview-users/overview-users.module').then((m) => m.OverviewUsersModule),
+  },
+  {
+    canActivate: [IsAuthorizedGuard, IsAdminGuard],
+    path: 'admin-panel',
+    loadChildren: () => import('./modules/create-edit-users/admin-panel.module').then((m) => m.AdminPanelModule),
   }
 ];
 
@@ -22,5 +30,4 @@ const appRoutes: Routes = [
   imports: [RouterModule.forRoot(appRoutes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {
-}
+export class AppRoutingModule {}

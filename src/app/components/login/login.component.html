@@ -1,12 +1,53 @@
-<form class="p-3">
-  <div class="mb-3">
-    <label for="exampleInputEmail1" class="form-label">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-  </div>
-  <div class="mb-3">
-    <label for="exampleInputPassword1" class="form-label">Password</label>
-    <input type="password" class="form-control" id="exampleInputPassword1">
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div class="mt-5 d-flex justify-content-center align-items-center">
+
+  <form [formGroup]="loginForm" class="w-100 p-3 max-width-500">
+
+    <div [style.visibility]="isWrongPassword ? 'visible' : 'hidden'"
+         class="text-center text-danger mb-3">* Wrong username or password</div>
+
+    <div class="mb-3">
+      <label for="username" class="form-label">Username</label>
+      <input formControlName="username"
+             [readOnly]="isLoading"
+             type="text"
+             class="form-control"
+             id="username"
+             autocomplete="off">
+
+      <ul *ngIf="usernameControl.invalid && usernameControl.touched" class="error-list">
+        <li *ngIf="usernameControl.hasError('required')">required</li>
+        <li *ngIf="usernameControl.hasError('maxlength')">maxlength 40</li>
+      </ul>
+
+    </div>
+
+    <div class="mb-3">
+      <label for="password" class="form-label">Password</label>
+      <input formControlName="password"
+             [readOnly]="isLoading"
+             type="password"
+             class="form-control"
+             id="password"
+             autocomplete="off">
+
+      <ul *ngIf="passwordControl.invalid && passwordControl.touched" class="error-list">
+        <li *ngIf="passwordControl.hasError('required')">required</li>
+        <li *ngIf="passwordControl.hasError('maxlength')">maxlength 40</li>
+      </ul>
+
+    </div>
+
+    <button (click)="onLogin()" [disabled]="isLoading"
+            class="btn btn-primary" type="button" >
+
+      <span *ngIf="!isLoading">Login</span>
+
+      <ng-container *ngIf="isLoading">
+        <span class="spinner-border spinner-border-sm"></span>
+        <span class="ms-2">Loading...</span>
+      </ng-container>
+
+    </button>
+
+  </form>
+</div>

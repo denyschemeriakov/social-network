@@ -1,0 +1,14 @@
+@import "variables";
+@import "mixins";
+
+.error-list {
+  list-style: none;
+  padding: 0;
+
+  @include text-message-with-icon('li', '*', $error);
+}
+
+.btn-primary {
+  background-color: $midnight-blue !important;
+  border-color: $midnight-blue !important;
+}

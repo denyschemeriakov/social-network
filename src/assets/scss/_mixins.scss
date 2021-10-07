@@ -1,0 +1,18 @@
+// for creating text messages (errors, info)
+@mixin text-message-with-icon($selector, $icon-code, $color) {
+  #{$selector} {
+    font-size: 14px;
+    line-height: 20px;
+    color: $color;
+    position: relative;
+    display: flex;
+
+    &:before {
+      content: $icon-code;
+      font-family: 'project-icons';
+      font-size: .75rem;
+      margin-right: .5rem;
+      display: inline-block;
+    }
+  }
+}

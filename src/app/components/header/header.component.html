@@ -1,9 +1,19 @@
-<header class="header p-3">
-  <button (click)="goToLoginPage()"
+<header class="p-3">
+  <button *ngIf="!isAuthorized"
+          (click)="goToLoginPage()"
+          [ngClass]="{'active': currentUrl?.includes('login')}"
           type="button"
-          class="btn btn-outline-primary me-3">Login</button>
+          class="btn btn-outline-light me-3">Login</button>
 
-  <button (click)="goToUsersList()"
+  <button *ngIf="isAuthorized"
+          (click)="goToUsersList()"
+          [ngClass]="{'active': currentUrl?.includes('list-users')}"
           type="button"
-          class="btn btn-outline-primary me-3">Users list</button>
+          class="btn btn-outline-light me-3">Users list</button>
+
+  <button *ngIf="isAuthorized && isAdmin"
+          (click)="goToAdminPanel()"
+          [ngClass]="{'active': currentUrl?.includes('admin-panel')}"
+          type="button"
+          class="btn btn-outline-light me-3">Admin Panel</button>
 </header>

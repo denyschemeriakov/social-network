@@ -1,0 +1,44 @@
+<div *ngIf="!isLoading" class="w-100 mt-5">
+
+  <ul class="mx-auto px-3 list-group max-width-500">
+
+    <button routerLink="/admin-panel/create-user"
+            class="btn btn-primary w-100 mb-3" type="button">Create User</button>
+
+    <li *ngFor="let user of users"
+        class="list-group-item d-flex align-items-center justify-content-between">
+
+      <div>{{user?.username}}</div>
+
+      <div class="d-flex align-items-center">
+        <button routerLink="/admin-panel/edit-user/{{user.id}}"
+                type="button" class="btn btn-link">Edit</button>
+
+        <button (click)="userToDelete = user"
+                type="button" class="btn-close"
+                data-bs-toggle="modal" data-bs-target="#staticBackdrop"></button>
+      </div>
+
+    </li>
+
+  </ul>
+
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete <strong>{{userToDelete?.username}}</strong>?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button (click)="deleteUser()" type="button" class="btn btn-primary" data-bs-dismiss="modal">Confirm</button>
+      </div>
+    </div>
+  </div>
+</div>

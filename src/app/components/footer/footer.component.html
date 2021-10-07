@@ -1,2 +1,10 @@
-<footer>
+<footer class="p-3">
+  <button *ngIf="isAuthorized"
+          (click)="logout()"
+          type="button"
+          class="btn btn-outline-light me-3">Logout</button>
+
+  <button (click)="goBack()"
+          type="button"
+          class="btn btn-outline-light me-3">Back</button>
 </footer>

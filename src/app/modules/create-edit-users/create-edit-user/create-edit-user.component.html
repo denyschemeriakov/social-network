@@ -1,0 +1,195 @@
+<div *ngIf="!isLoading" class="d-flex justify-content-center align-items-center">
+
+  <form [formGroup]="userForm" class="w-100 p-3 max-width-500">
+
+    <img *ngIf="imgURL"
+         [src]="imgURL"
+         class="img-thumbnail">
+
+    <div class="d-flex justify-content-center mb-2">
+      <input (change)="onPhotoChange(fileInput.files)"
+             type="file"
+             id="file"
+             #fileInput
+             hidden>
+
+      <button (click)="fileInput.click()"
+              class="btn btn-primary mt-3" type="button" >
+        Choose Photo
+      </button>
+
+      <ul *ngIf="photoControl.invalid && photoControl.touched" class="ms-2 mt-auto error-list">
+        <li *ngIf="photoControl.hasError('required')">required</li>
+      </ul>
+    </div>
+
+    <div class="mb-2">
+      <label for="role" class="form-label">Role</label>
+      <select formControlName="role" id="role" class="form-select">
+        <option selected [ngValue]="'ADMIN'">Admin</option>
+        <option [ngValue]="'USER'">User</option>
+      </select>
+
+      <ul *ngIf="roleControl.invalid && roleControl.touched" class="error-list">
+        <li *ngIf="roleControl.hasError('required')">required</li>
+      </ul>
+
+    </div>
+
+    <div class="mb-2">
+      <label for="username" class="form-label">Username</label>
+      <input formControlName="username"
+             type="text"
+             class="form-control"
+             id="username">
+
+      <ul *ngIf="usernameControl.invalid && usernameControl.touched" class="error-list">
+        <li *ngIf="usernameControl.hasError('required')">required</li>
+        <li *ngIf="usernameControl.hasError('maxlength')">maxlength 40</li>
+      </ul>
+
+    </div>
+
+    <div class="mb-2">
+      <label for="password" class="form-label">Password</label>
+      <input formControlName="password"
+             type="text"
+             class="form-control"
+             id="password">
+
+      <ul *ngIf="passwordControl.invalid && passwordControl.touched" class="error-list">
+        <li *ngIf="passwordControl.hasError('required')">required</li>
+        <li *ngIf="passwordControl.hasError('maxlength')">maxlength 40</li>
+      </ul>
+
+    </div>
+
+    <div class="mb-2">
+      <label for="age" class="form-label">Age</label>
+      <input formControlName="age"
+             type="text"
+             class="form-control"
+             id="age">
+
+      <ul *ngIf="ageControl.invalid && ageControl.touched" class="error-list">
+        <li *ngIf="ageControl.hasError('required')">required</li>
+        <li *ngIf="ageControl.hasError('maxlength')">maxlength 3</li>
+        <li *ngIf="ageControl.hasError('onlyDigits')">Only digits allowed</li>
+      </ul>
+
+    </div>
+
+    <div class="mb-3">
+      <label for="occupation" class="form-label">Occupation</label>
+      <input formControlName="occupation"
+             type="text"
+             class="form-control"
+             id="occupation">
+
+      <ul *ngIf="occupationControl.invalid && occupationControl.touched" class="error-list">
+        <li *ngIf="occupationControl.hasError('required')">required</li>
+        <li *ngIf="occupationControl.hasError('maxlength')">maxlength 40</li>
+      </ul>
+
+    </div>
+
+    <button (click)="addUniversity()"
+            class="btn btn-primary">Add University</button>
+
+    <div formArrayName="education">
+      <div *ngFor="let item of educationList.controls; let i = index"
+           class="my-2" >
+
+        <div class="d-flex">
+          <b>{{i + 1}}.</b>
+          <button *ngIf="i"
+                  (click)="removeUniversity(i)"
+                  type="button" class="btn-close"></button>
+        </div>
+
+        <div class="input-group"
+             [formGroupName]="i">
+
+          <div class="w-100 mb-2">
+            <label class="form-label">University</label>
+            <input formControlName="university"
+                   type="text"
+                   class="form-control" />
+
+            <ul *ngIf="educationList.at(i).get('university')?.invalid && educationList.at(i).get('university')?.touched" class="error-list">
+              <li *ngIf="educationList.at(i).get('university')?.hasError('required')">required</li>
+              <li *ngIf="educationList.at(i).get('university')?.hasError('maxlength')">maxlength 40</li>
+            </ul>
+
+          </div>
+
+          <div class="w-100 mb-2">
+            <label class="form-label">Speciality</label>
+            <input formControlName="speciality"
+                   type="text"
+                   class="form-control" />
+
+            <ul *ngIf="educationList.at(i).get('speciality')?.invalid && educationList.at(i).get('speciality')?.touched" class="error-list">
+              <li *ngIf="educationList.at(i).get('speciality')?.hasError('required')">required</li>
+              <li *ngIf="educationList.at(i).get('speciality')?.hasError('maxlength')">maxlength 40</li>
+            </ul>
+
+          </div>
+
+          <div class="w-50">
+            <label class="form-label">Start Date</label>
+            <input formControlName="startDate"
+                   placeholder="DD.MM.YYYY"
+                   type="text"
+                   class="form-control" />
+
+            <ul *ngIf="educationList.at(i).get('startDate')?.invalid && educationList.at(i).get('startDate')?.touched" class="error-list">
+              <li *ngIf="educationList.at(i).get('startDate')?.hasError('required')">required</li>
+              <li *ngIf="educationList.at(i).get('startDate')?.hasError('pattern')">Dates format DD.MM.YYYY</li>
+              <li *ngIf="educationList.at(i).get('startDate')?.hasError('minlength')">minlength 10</li>
+              <li *ngIf="educationList.at(i).get('startDate')?.hasError('maxlength')">maxlength 10</li>
+            </ul>
+
+          </div>
+
+          <div class="w-50">
+            <label class="form-label">End Date</label>
+            <input formControlName="endDate"
+                   placeholder="DD.MM.YYYY"
+                   type="text"
+                   class="form-control" />
+
+            <ul *ngIf="educationList.at(i).get('endDate')?.invalid && educationList.at(i).get('endDate')?.touched" class="error-list">
+              <li *ngIf="educationList.at(i).get('endDate')?.hasError('required')">required</li>
+              <li *ngIf="educationList.at(i).get('endDate')?.hasError('minlength')">minlength 10</li>
+              <li *ngIf="educationList.at(i).get('endDate')?.hasError('maxlength')">maxlength 10</li>
+              <li *ngIf="educationList.at(i).get('endDate')?.hasError('pattern')">Dates format DD.MM.YYYY</li>
+            </ul>
+
+          </div>
+
+          <ul *ngIf="educationList.at(i)?.invalid &&
+                     educationList.at(i).get('startDate')?.touched &&
+                     educationList.at(i).get('endDate')?.touched"
+              class="mx-auto mt-1 error-list">
+            <li *ngIf="educationList.at(i)?.hasError('invalidDates')">Start Date should be less than End Date</li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+
+    <button *ngIf="!isEditUser"
+            (click)="createUser()"
+            class="btn btn-primary mt-3" type="button" >
+      Create User
+    </button>
+
+    <button *ngIf="isEditUser"
+            (click)="editUser()"
+            class="btn btn-primary mt-3" type="button" >
+      Edit User
+    </button>
+
+  </form>
+</div>

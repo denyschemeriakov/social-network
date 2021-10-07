@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import {DataService} from "../../services/data.service";
-import {Router} from "@angular/router";
+import {Component, OnInit} from '@angular/core';
+import {NavigationEnd, Router} from "@angular/router";
+import {AuthService} from "../../services/auth.service";
 
 @Component({
   selector: 'app-header',
@@ -9,9 +9,25 @@ import {Router} from "@angular/router";
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private readonly _router: Router) { }
+  public currentUrl: string;
+
+  get isAuthorized(): boolean {
+    return this._authService.isAuthorized;
+  }
+
+  get isAdmin(): boolean {
+    return this._authService.isAdmin;
+  }
+
+  constructor(private readonly _router: Router,
+              private readonly _authService: AuthService) { }
 
   public ngOnInit(): void {
+    this._router.events.subscribe((event: any) => {
+      if (event instanceof NavigationEnd) {
+        this.currentUrl = event.urlAfterRedirects;
+      }
+    });
   }
 
   public goToLoginPage(): void {
@@ -19,6 +35,10 @@ export class HeaderComponent implements OnInit {
   }
 
   public goToUsersList(): void {
-    this._router.navigate(['/users-list']);
+    this._router.navigate(['/list-users']);
+  }
+
+  public goToAdminPanel(): void {
+    this._router.navigate(['/admin-panel']);
   }
 }
